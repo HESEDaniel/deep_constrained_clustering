@@ -135,10 +135,10 @@ class IDEC(nn.Module):
         # d(x, y) = q(x) * q(y)
         negative_dis = torch.sum(anchor * negative, dim=1)
         positive_dis = torch.sum(anchor * positive, dim=1)
-        margin = margin_constant * torch.ones(negative_dis.shape).cuda()
+        margin = margin_constant * torch.ones(negative_dis.shape)
         diff_dis = negative_dis - positive_dis
         penalty = diff_dis + margin
-        triplet_loss = 1*torch.max(penalty, torch.zeros(negative_dis.shape).cuda())
+        triplet_loss = 1*torch.max(penalty, torch.zeros(negative_dis.shape))
 
         return torch.mean(triplet_loss)
 
@@ -237,7 +237,7 @@ class IDEC(nn.Module):
                 inputs = Variable(xbatch)
                 target = Variable(pbatch)
                 cons_detail = np.array([0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1])
-                global_cons = torch.from_numpy(cons_detail).float().to("cuda")
+                global_cons = torch.from_numpy(cons_detail).float()
 
                 z, qbatch, xrecon = self.forward(inputs)
                 if use_global == False:
